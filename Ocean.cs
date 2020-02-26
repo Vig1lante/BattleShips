@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+//test game
 namespace battle_ships
 {
 	class Ocean
