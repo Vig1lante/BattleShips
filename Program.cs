@@ -27,7 +27,7 @@ namespace battle_ships {
 
                 var numbers = sampleCoords.Split(',');
                 int[] myInts = Array.ConvertAll(numbers, int.Parse);
-                int posX = myInts[0], posY = myInts[1];
+                int posX = myInts[0] - 1, posY = myInts[1] - 1;
                 TestOcean.MarkHit(posX, posY, TestOcean);
                 TestOcean.DebugOcean();
 

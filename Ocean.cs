@@ -141,11 +141,11 @@ namespace battle_ships
 
 		public void MarkHit(int posx, int posy, Ocean playerOcean)
 		{
-
-			if (CheckHit(posx, posy, playerOcean)) {
-				playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
-			else { playerOcean.Board[posx, posy].SetMark(Square.Mark.MISSED); }
-
+			if (!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.HIT))
+			{
+				if (CheckHit(posx, posy, playerOcean)){ playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
+				else { playerOcean.Board[posx, posy].SetMark(Square.Mark.MISSED); }		
+			}
 			playerOcean.Board[posx, posy].setVisible();
 		}
 
