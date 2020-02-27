@@ -114,7 +114,7 @@ namespace battle_ships
 			}
 			if (vertical)
 			{
-				for (int cx = initx; cx < initx + initsize; cx++)
+				for (int cx = initx; cx < initx + size; cx++)
 				{
 					Board[cx, inity].SetMark(type);
 				}
@@ -128,7 +128,50 @@ namespace battle_ships
 			}
 			return true;
 		}
+		public bool CheckHit(int posx, int posy, Ocean playerOcean)
+		{
+			// convert posx/posy na int32
+
+			if (playerOcean.Board[posx, posy].isShip())
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public void MarkHit(int posx, int posy, Ocean playerOcean)
+		{
+
+			if (CheckHit(posx, posy, playerOcean)) {
+				playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
+			else { playerOcean.Board[posx, posy].SetMark(Square.Mark.MISSED); }
+
+			playerOcean.Board[posx, posy].setVisible();
+		}
+
+		//public void SetToSunk(Ocean playerOcean)
+		//// Check all squares around X, if only X, miss and ocean present then sink
+		//{
+		//	for (int x = 0; x < 10; x++)
+		//	{
+		//		for (int y = 0; y < 10; y++)
+		//		{
+		//			// Check square outside board edges
+		//			if (playerOcean.Board[x, y].Back.Equals(Square.Mark.HIT)) {
+		//				if ((x < 10 && playerOcean.Board[x + 1, y].isMiscSymbol()) &&
+		//					(x > 0 && playerOcean.Board[x - 1, y].isMiscSymbol()) &&
+		//					(y < 10 && playerOcean.Board[x, y + 1].isMiscSymbol()) &&
+		//					(y > 0 && playerOcean.Board[x, y - 1].isMiscSymbol()))
+		//				{
+		//					playerOcean.Board[x, y].SetMark(Square.Mark.SUNK);
+		//				}
+		//				// Check edge cases
+		//				else if ()
+		//			}
+		//		}
+		//	}
+			
+		//}
 	}
 }
-
 
