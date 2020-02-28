@@ -128,6 +128,25 @@ namespace battle_ships
 			}
 			return true;
 		}
+		public bool ForWin(Ocean Mapa)
+		{
+			int counter = 0;
+			for(int row = 0; row < 10; row ++)
+			{
+				for(int column = 0; column < 10; column++)
+				{
+					if(Mapa.Board[row, column].Back.Equals(Square.Mark.SUNK))
+					{
+					counter += 1;	
+					}		
+				}
+			}
+			if(counter == 17)
+			{
+				return true;
+			}
+			return false;			
+		}
 	}
 }
 
