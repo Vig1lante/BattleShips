@@ -5,7 +5,7 @@ using System.Text;
 namespace battle_ships {
     class Square {
 		private Square.Mark Front;
-		private Square.Mark Back;
+		public Square.Mark Back;
 		public enum Mark {CARRIER, BATTLESHIP, CRUISER,  SUBMARINE, DESTROYER, WATER, MISSED, HIT, NOT_SET, SUNK}
 		// Accept the value of back square for front square.
 		public void setVisible(){
