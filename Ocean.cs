@@ -149,29 +149,46 @@ namespace battle_ships
 			playerOcean.Board[posx, posy].setVisible();
 		}
 
-		//public void SetToSunk(Ocean playerOcean)
-		//// Check all squares around X, if only X, miss and ocean present then sink
-		//{
-		//	for (int x = 0; x < 10; x++)
-		//	{
-		//		for (int y = 0; y < 10; y++)
-		//		{
-		//			// Check square outside board edges
-		//			if (playerOcean.Board[x, y].Back.Equals(Square.Mark.HIT)) {
-		//				if ((x < 10 && playerOcean.Board[x + 1, y].isMiscSymbol()) &&
-		//					(x > 0 && playerOcean.Board[x - 1, y].isMiscSymbol()) &&
-		//					(y < 10 && playerOcean.Board[x, y + 1].isMiscSymbol()) &&
-		//					(y > 0 && playerOcean.Board[x, y - 1].isMiscSymbol()))
-		//				{
-		//					playerOcean.Board[x, y].SetMark(Square.Mark.SUNK);
-		//				}
-		//				// Check edge cases
-		//				else if ()
-		//			}
-		//		}
-		//	}
-			
-		//}
+		public void SetToSunk(Ocean playerOcean)
+		// Check all squares around X, if only X, miss and ocean present then sink
+		{
+			for (int x = 0; x < 10; x++)
+			{
+				for (int y = 0; y < 10; y++)
+				{
+					// Check square outside board edges
+					if (playerOcean.Board[x, y].Back.Equals(Square.Mark.HIT))
+					{
+						if ((x > 0 && playerOcean.Board[x - 1, y].isMiscSymbol()) &&
+							(x < 9 && playerOcean.Board[x + 1, y].isMiscSymbol()) &&
+							(y > 0 && playerOcean.Board[x, y - 1].isMiscSymbol()) &&
+							(y < 9 && playerOcean.Board[x, y + 1].isMiscSymbol()))
+								playerOcean.Board[x, y].SetMark(Square.Mark.SUNK);
+					}
+					
+				}
+			}
+
+		}
+		public bool ForWin(Ocean Mapa)
+		{
+			int counter = 0;
+			for (int row = 0; row < 10; row++)
+			{
+				for (int column = 0; column < 10; column++)
+				{
+					if (Mapa.Board[row, column].Back == Square.Mark.HIT)
+					{
+						counter += 1;
+					}
+				}
+			}
+			if (counter == 17)
+			{
+				return true;
+			}
+			return false;
+		}
+		
 	}
 }
-

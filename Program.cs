@@ -5,7 +5,6 @@ namespace battle_ships {
     {
         static void Main(string[] args)
         {
-
             var TestOcean = new Ocean();
 
             while (!TestOcean.DebugPutRandomlyShip(Square.Mark.CARRIER));
@@ -27,10 +26,15 @@ namespace battle_ships {
 
                 var numbers = sampleCoords.Split(',');
                 int[] myInts = Array.ConvertAll(numbers, int.Parse);
-                int posX = myInts[0] - 1, posY = myInts[1] - 1;
+                int posX = myInts[0], posY = myInts[1];
                 TestOcean.MarkHit(posX, posY, TestOcean);
                 TestOcean.DebugOcean();
-
+                //TestOcean.SetToSunk(TestOcean);
+                if (TestOcean.ForWin(TestOcean) == true)
+                {
+                    Console.WriteLine("You win! GZ!");
+                }
+                
             }
 
         }

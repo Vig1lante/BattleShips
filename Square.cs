@@ -38,7 +38,7 @@ namespace battle_ships{
 		public bool isMiscSymbol()
 		{
 			if (this.Back == Mark.MISSED ||
-				this.Back == Mark.WATER ||
+				this.Back == Mark.NOT_SET ||
 				this.Back == Mark.HIT ||
 				this.Back == Mark.SUNK)
 			{
