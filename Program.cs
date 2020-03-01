@@ -6,6 +6,8 @@ namespace battle_ships {
 
         static void Main()
         {
+
+
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkBlue;
 
@@ -26,7 +28,8 @@ namespace battle_ships {
                 Console.BackgroundColor = ConsoleColor.Black;
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
                 //Console.ForegroundColor = ConsoleColor.DarkCyan;
-                Console.WriteLine("Type in your coords");
+                Console.WriteLine("Type in your coords -- !! LETTER FIRST, THEN NUMBER (EG. 'A2') !!");
+
                 string sampleCoords = Console.ReadLine();
                 if (sampleCoords == "q" || sampleCoords == "quit")
                 {
@@ -34,10 +37,11 @@ namespace battle_ships {
                     Console.WriteLine("See you next time!");
                     continue;
                 }
-
-                var numbers = sampleCoords.Split(',');
-                int[] myInts = Array.ConvertAll(numbers, int.Parse);
-                int posX = myInts[0], posY = myInts[1];
+                //var numbers = sampleCoords.Split(',');
+                //int[] myInts = Array.ConvertAll(numbers, int.Parse);
+                char y = Convert.ToChar(sampleCoords[0]);
+                int posX = Int32.Parse(sampleCoords[1].ToString()) - 1; 
+                int posY = char.ToUpper(y) - 65;
                 testOcean.MarkHit(posX, posY, testOcean);
                 new SunkManager(testOcean).SunkHammer();
                 testOcean.DebugOcean();
