@@ -9,9 +9,7 @@ namespace battle_ships{
 
 		public enum Mark { CARRIER, BATTLESHIP, CRUISER, SUBMARINE, DESTROYER, WATER, MISSED, HIT, NOT_SET, SUNK }
 		// Accept the value of back square for front square.
-		public void setVisible() {
-			this.Front = this.Back;
-		}
+		public void setVisible() => Front = Back;
 
 		// Set the square type for ship type field.
 		public void SetMark(Square.Mark value) {

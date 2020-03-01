@@ -6,7 +6,7 @@ namespace battle_ships {
         static void Main(string[] args)
         {
             var testOcean = new Ocean();
-
+            
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.CARRIER));
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.BATTLESHIP)) ;
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.SUBMARINE)) ;
@@ -37,7 +37,7 @@ namespace battle_ships {
                 }
                 
             }
-
         }
+          
     }
 }

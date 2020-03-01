@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+//test game
 namespace battle_ships
 {
 	class Ocean
@@ -129,6 +129,7 @@ namespace battle_ships
 			}
 			return true;
 		}
+
 		public bool CheckHit(int posx, int posy, Ocean playerOcean)
 		{
 			// convert posx/posy na int32
@@ -151,7 +152,6 @@ namespace battle_ships
 			}
 			playerOcean.Board[posx, posy].setVisible();
 			}
-
 
 		public bool ForWin(Ocean Mapa)
 		{
