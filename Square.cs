@@ -35,6 +35,22 @@ namespace battle_ships{
 			return false;
 		}
 
+
+		public static int ShipSizeSum()
+		{
+			int totalSum = 0;
+			foreach(Mark item in Enum.GetValues(typeof(Mark)))
+			{
+				if (item == Mark.BATTLESHIP ||
+					item == Mark.CARRIER ||
+					item == Mark.CRUISER ||
+					item == Mark.DESTROYER ||
+					item == Mark.SUBMARINE) {
+					totalSum += (int)item;
+				}
+			}
+			return totalSum;
+		}
 		public bool isMiscSymbol()
 		{
 			if (this.Back == Mark.MISSED ||
@@ -44,8 +60,12 @@ namespace battle_ships{
 			{
 				return true;
 			}
+			bool swag = this.Back == Mark.HIT;
+			bool swag2 = this.Back.Equals(Mark.HIT);
 			return false;
 		}
+
+
 
 		/*
 		public bool IsVisible(){

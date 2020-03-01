@@ -5,15 +5,15 @@ namespace battle_ships {
     {
         static void Main(string[] args)
         {
-            var TestOcean = new Ocean();
+            var testOcean = new Ocean();
 
-            while (!TestOcean.DebugPutRandomlyShip(Square.Mark.CARRIER));
-            while (!TestOcean.DebugPutRandomlyShip(Square.Mark.BATTLESHIP)) ;
-            while (!TestOcean.DebugPutRandomlyShip(Square.Mark.SUBMARINE)) ;
-            while (!TestOcean.DebugPutRandomlyShip(Square.Mark.CRUISER)) ;
-            while (!TestOcean.DebugPutRandomlyShip(Square.Mark.DESTROYER)) ;
+            while (!testOcean.DebugPutRandomlyShip(Square.Mark.CARRIER));
+            while (!testOcean.DebugPutRandomlyShip(Square.Mark.BATTLESHIP)) ;
+            while (!testOcean.DebugPutRandomlyShip(Square.Mark.SUBMARINE)) ;
+            while (!testOcean.DebugPutRandomlyShip(Square.Mark.CRUISER)) ;
+            while (!testOcean.DebugPutRandomlyShip(Square.Mark.DESTROYER)) ;
 
-            TestOcean.DebugOcean();
+            testOcean.DebugOcean();
             bool flag = true;
             while (flag)
             {
@@ -27,12 +27,13 @@ namespace battle_ships {
                 var numbers = sampleCoords.Split(',');
                 int[] myInts = Array.ConvertAll(numbers, int.Parse);
                 int posX = myInts[0], posY = myInts[1];
-                TestOcean.MarkHit(posX, posY, TestOcean);
-                TestOcean.DebugOcean();
-                //TestOcean.SetToSunk(TestOcean);
-                if (TestOcean.ForWin(TestOcean) == true)
+                testOcean.MarkHit(posX, posY, testOcean);
+                new SunkManager(testOcean).SunkHammer();
+                testOcean.DebugOcean();
+                if (testOcean.ForWin(testOcean) == true)
                 {
                     Console.WriteLine("You win! GZ!");
+                    flag = false;
                 }
                 
             }

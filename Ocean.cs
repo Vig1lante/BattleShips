@@ -10,12 +10,13 @@ namespace battle_ships
 		private Random random = new Random();
 
 		// Create a 10x10 array of "Square" type
-		private Square[,] Board = new Square[10, 10];
+		public Square[,] Board { get; set; }
 
 		// Define custom ocean constructor for filling the "Board". 
 		// Adds instances of Square type in each iteration.
 		public Ocean()
 		{
+			Board = new Square[10, 10];
 			for (int x = 0; x < 10; x++)
 			{
 				for (int y = 0; y < 10; y++)
@@ -141,53 +142,35 @@ namespace battle_ships
 
 		public void MarkHit(int posx, int posy, Ocean playerOcean)
 		{
-			if (!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.HIT))
+			if (!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.HIT) && //
+				!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.SUNK)
+				)
 			{
 				if (CheckHit(posx, posy, playerOcean)){ playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
 				else { playerOcean.Board[posx, posy].SetMark(Square.Mark.MISSED); }		
 			}
 			playerOcean.Board[posx, posy].setVisible();
-		}
-
-		public void SetToSunk(Ocean playerOcean)
-		// Check all squares around X, if only X, miss and ocean present then sink
-		{
-			for (int x = 0; x < 10; x++)
-			{
-				for (int y = 0; y < 10; y++)
-				{
-					// Check square outside board edges
-					if (playerOcean.Board[x, y].Back.Equals(Square.Mark.HIT))
-					{
-						if ((x > 0 && playerOcean.Board[x - 1, y].isMiscSymbol()) &&
-							(x < 9 && playerOcean.Board[x + 1, y].isMiscSymbol()) &&
-							(y > 0 && playerOcean.Board[x, y - 1].isMiscSymbol()) &&
-							(y < 9 && playerOcean.Board[x, y + 1].isMiscSymbol()))
-								playerOcean.Board[x, y].SetMark(Square.Mark.SUNK);
-					}
-					
-				}
 			}
 
-		}
+
 		public bool ForWin(Ocean Mapa)
 		{
-			int counter = 0;
-			for (int row = 0; row < 10; row++)
+			int row = Mapa.Board.GetLength(0);
+			int col = Mapa.Board.GetLength(1);
+			for (int x = 0; x < row; x++)
 			{
-				for (int column = 0; column < 10; column++)
+				for (int y = 0; y < col; y++)
 				{
-					if (Mapa.Board[row, column].Back == Square.Mark.HIT)
+					if (Mapa.Board[x, y].Back != Square.Mark.SUNK &&//
+						Mapa.Board[x, y].Back != Square.Mark.NOT_SET &&//
+						Mapa.Board[x, y].Back != Square.Mark.MISSED
+						)
 					{
-						counter += 1;
+						return false;
 					}
 				}
 			}
-			if (counter == 17)
-			{
-				return true;
-			}
-			return false;
+			return true;
 		}
 		
 	}
