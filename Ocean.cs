@@ -28,6 +28,7 @@ namespace battle_ships
 		// Draw ocean in console with different square types in board array taken from the Square class.
 		public void DebugOcean()
 		{
+
 			Console.WriteLine("  |A|B|C|D|E|F|G|H|I|J|");
 			for (int x = 0; x < 10; x++)
 			{
@@ -41,8 +42,8 @@ namespace battle_ships
 				}
 				for (int y = 0; y < 10; y++)
 				{
-				// Take x, y index from board and draw square type for that index.
-					Console.Write(Board[x, y].Draw() + "|");
+					// Take x, y index from board and draw square type for that index.
+					Console.Write(Board[x, y].Draw() +  "|");
 				}
 				Console.WriteLine("");
 			}

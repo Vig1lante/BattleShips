@@ -3,8 +3,14 @@ using System;
 namespace battle_ships {
     class Program
     {
+
         static void Main()
         {
+            Console.BackgroundColor = ConsoleColor.Black;
+            Console.ForegroundColor = ConsoleColor.DarkBlue;
+
+            Console.WriteLine("WELCOME TO THE BATTLESHIP GAME!");
+            Console.WriteLine("ENJOY YOUR STAY AND MAY THE BEST ONE WIN!\n\n");
             var testOcean = new Ocean();
 
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.CARRIER)) ;
@@ -17,6 +23,9 @@ namespace battle_ships {
             bool flag = true;
             while (flag)
             {
+                Console.BackgroundColor = ConsoleColor.Black;
+                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                //Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Console.WriteLine("Type in your coords");
                 string sampleCoords = Console.ReadLine();
                 if (sampleCoords == "q" || sampleCoords == "quit")
@@ -37,7 +46,7 @@ namespace battle_ships {
                     Console.WriteLine("You win! GZ!");
                     flag = false;
                 }
-                
+                Console.ResetColor();
             }
         }
           

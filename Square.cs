@@ -4,8 +4,8 @@ using System.Text;
 
 namespace battle_ships{
 	class Square {
-		private Square.Mark Front;
-		public Square.Mark Back;
+		public Square.Mark Front { get; set; }
+		public Square.Mark Back { get; set; }
 
 		public enum Mark { CARRIER, BATTLESHIP, CRUISER, SUBMARINE, DESTROYER, WATER, MISSED, HIT, NOT_SET, SUNK }
 		// Accept the value of back square for front square.
@@ -33,21 +33,21 @@ namespace battle_ships{
 		}
 
 
-		public static int ShipSizeSum()
-		{
-			int totalSum = 0;
-			foreach(Mark item in Enum.GetValues(typeof(Mark)))
-			{
-				if (item == Mark.BATTLESHIP ||
-					item == Mark.CARRIER ||
-					item == Mark.CRUISER ||
-					item == Mark.DESTROYER ||
-					item == Mark.SUBMARINE) {
-					totalSum += (int)item;
-				}
-			}
-			return totalSum;
-		}
+		//public static int ShipSizeSum()
+		//{
+		//	int totalSum = 0;
+		//	foreach(Mark item in Enum.GetValues(typeof(Mark)))
+		//	{
+		//		if (item == Mark.BATTLESHIP ||
+		//			item == Mark.CARRIER ||
+		//			item == Mark.CRUISER ||
+		//			item == Mark.DESTROYER ||
+		//			item == Mark.SUBMARINE) {
+		//			totalSum += (int)item;
+		//		}
+		//	}
+		//	return totalSum;
+		//}
 		public bool IsMiscSymbol()
 		{
 			if (Back == Mark.MISSED ||
@@ -67,29 +67,30 @@ namespace battle_ships{
 			this.Back = Mark.NOT_SET;
 		}
 		// Define method for enum ship type that returns ship-specific char.
+		// UPDATE 01.03 -- Changed chars for invisible - resuable for player vs PC (METHOD OVERLOAD?)
 		public char Draw() {
 			switch (Back)
 			{
 				case Mark.CARRIER:
-					return 'C';
+					return '-';
 				case Mark.BATTLESHIP:
-					return 'b';
+					return '-';
 				case Mark.CRUISER:
-					return 'c';
+					return '-';
 				case Mark.SUBMARINE:
-					return 's';
+					return '-';
 				case Mark.DESTROYER:
-					return 'd';
-				case Mark.WATER:
-					return '~';
+					return '-';
 				case Mark.HIT:
 					return 'X';
 				case Mark.MISSED:
 					return 'o';
 				case Mark.SUNK:
 					return '#';
+				case Mark.WATER:
+					return '-';
 				case Mark.NOT_SET:
-					break;
+					return '-';
 			}
 			return ' ';
 		}
