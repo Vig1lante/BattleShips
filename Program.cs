@@ -3,10 +3,10 @@ using System;
 namespace battle_ships {
     class Program
     {
-
         static void Main()
         {
 
+            int posX;
 
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkBlue;
@@ -40,7 +40,11 @@ namespace battle_ships {
                 //var numbers = sampleCoords.Split(',');
                 //int[] myInts = Array.ConvertAll(numbers, int.Parse);
                 char y = Convert.ToChar(sampleCoords[0]);
-                int posX = Int32.Parse(sampleCoords[1].ToString()) - 1; 
+                if (sampleCoords.Length == 3)
+                {
+                    posX = Int32.Parse(sampleCoords[1].ToString() + sampleCoords[2].ToString()) - 1;
+                }
+                else { posX = Int32.Parse(sampleCoords[1].ToString()) - 1; }
                 int posY = char.ToUpper(y) - 65;
                 testOcean.MarkHit(posX, posY, testOcean);
                 new SunkManager(testOcean).SunkHammer();
