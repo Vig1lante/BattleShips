@@ -24,10 +24,10 @@ namespace battle_ships
 					if (ocean.Board[x, y].Back.Equals(Square.Mark.HIT))
 					{
 						// hitCalc
-						var coordsToSink = sinkingNeeded(x, y);
+						var coordsToSink = SinkingNeeded(x, y);
 						if (coordsToSink!=null)
 						{
-							sinkCoords(coordsToSink);
+							SinkCoords(coordsToSink);
 						}
 
 					}
@@ -36,25 +36,25 @@ namespace battle_ships
 			}
         }
 
-		private void sinkCoords(List<int[]> coordsToSink)
+		private void SinkCoords(List<int[]> coordsToSink)
 		{
 			foreach(int[] coords in coordsToSink){
 				ocean.Board[coords[0], coords[1]].SetMark(Square.Mark.SUNK);
-				ocean.Board[coords[0], coords[1]].setVisible();
+				ocean.Board[coords[0], coords[1]].SetVisible();
 			}
 		}
-		private List<int[]> sinkingNeeded(int x, int y)
+		private List<int[]> SinkingNeeded(int x, int y)
 		{
 			List<int[]> coordsList= new List<int[]>();
 			if ((x != 0 && ocean.Board[x - 1, y].Back == Square.Mark.HIT) || // onlly first point of a ship should be considered
 				 (y != 0 && ocean.Board[x, y - 1].Back == Square.Mark.HIT)){
 				return null;
 			}
-			while (surroundedByMisc(x, y))
+			while (SurroundedByMisc(x, y))
 			{
 				int[] currentCords = new int[] { x, y };
 				coordsList.Add(currentCords);
-				int[] coords = getNeigbourHitCords(x, y);
+				int[] coords = GetNeigbourHitCords(x, y);
 				if (coords == null)
 				{
 					//break;
@@ -65,7 +65,7 @@ namespace battle_ships
 			} 
 			return null;
 		}
-		private int[] getNeigbourHitCords(int x, int y)
+		private int[] GetNeigbourHitCords(int x, int y)
 		{
 			if (x < 9 && ocean.Board[x + 1, y].Back == Square.Mark.HIT)
 			{
@@ -77,12 +77,12 @@ namespace battle_ships
 			// get x and y of next point(ONLY the point that goes further, don't look back
 			return null;
 		}
-		private bool surroundedByMisc(int x, int y)
+		private bool SurroundedByMisc(int x, int y)
 		{
-			if ((x < 9 && ocean.Board[x + 1, y].isMiscSymbol()) &&
-				   (x == 0 || ocean.Board[x - 1, y].isMiscSymbol()) &&
-				   (y < 9 && ocean.Board[x, y + 1].isMiscSymbol()) &&
-				   (y == 0 || ocean.Board[x, y - 1].isMiscSymbol()))
+			if ((x < 9 && ocean.Board[x + 1, y].IsMiscSymbol()) &&
+				   (x == 0 || ocean.Board[x - 1, y].IsMiscSymbol()) &&
+				   (y < 9 && ocean.Board[x, y + 1].IsMiscSymbol()) &&
+				   (y == 0 || ocean.Board[x, y - 1].IsMiscSymbol()))
 			{
 				return true;
 			}

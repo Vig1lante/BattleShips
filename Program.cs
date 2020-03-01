@@ -3,11 +3,11 @@ using System;
 namespace battle_ships {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             var testOcean = new Ocean();
-            
-            while (!testOcean.DebugPutRandomlyShip(Square.Mark.CARRIER));
+
+            while (!testOcean.DebugPutRandomlyShip(Square.Mark.CARRIER)) ;
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.BATTLESHIP)) ;
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.SUBMARINE)) ;
             while (!testOcean.DebugPutRandomlyShip(Square.Mark.CRUISER)) ;
@@ -19,9 +19,11 @@ namespace battle_ships {
             {
                 Console.WriteLine("Type in your coords");
                 string sampleCoords = Console.ReadLine();
-                if (sampleCoords == "q")
+                if (sampleCoords == "q" || sampleCoords == "quit")
                 {
-                    break;
+                    flag = false;
+                    Console.WriteLine("See you next time!");
+                    continue;
                 }
 
                 var numbers = sampleCoords.Split(',');

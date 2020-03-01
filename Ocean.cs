@@ -78,10 +78,10 @@ namespace battle_ships
 				startx = initx;
 				endx = startx;
 
-				if (initx > 0) startx -= 1;
+				if (initx > 0) startx--;
 				if (initx < 9) endx = initx + 1;
 				if (inity > 0) starty -= 1;
-				if (endy < 9) endy += 1;
+				if (endy < 9) endy++;
 
 
 				for (int cx = startx; cx <= endx; cx++)
@@ -100,8 +100,9 @@ namespace battle_ships
 				starty = inity;
 				endy = starty;
 
-				if (inity > 0) starty -= 1;
-				if (inity < 9) endy += 1;
+				//condition? consequent : alternative
+				if (inity > 0) starty--;
+				if (inity < 9) endy++;
 				if (initx > 0) startx = initx - 1;
 				if (initx + size < 9) endx += 1;
 
@@ -134,7 +135,7 @@ namespace battle_ships
 		{
 			// convert posx/posy na int32
 
-			if (playerOcean.Board[posx, posy].isShip())
+			if (playerOcean.Board[posx, posy].IsShip())
 			{
 				return true;
 			}
@@ -147,10 +148,10 @@ namespace battle_ships
 				!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.SUNK)
 				)
 			{
-				if (CheckHit(posx, posy, playerOcean)){ playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
+				if (CheckHit(posx, posy, playerOcean)) { playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
 				else { playerOcean.Board[posx, posy].SetMark(Square.Mark.MISSED); }		
 			}
-			playerOcean.Board[posx, posy].setVisible();
+			playerOcean.Board[posx, posy].SetVisible();
 			}
 
 		public bool ForWin(Ocean Mapa)
