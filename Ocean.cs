@@ -24,6 +24,11 @@ namespace battle_ships
 					Board[x, y] = new Square();
 				}
 			}
+			while (!this.DebugPutRandomlyShip(Square.Mark.CARRIER)) ;
+			while (!this.DebugPutRandomlyShip(Square.Mark.BATTLESHIP)) ;
+			while (!this.DebugPutRandomlyShip(Square.Mark.SUBMARINE)) ;
+			while (!this.DebugPutRandomlyShip(Square.Mark.CRUISER)) ;
+			while (!this.DebugPutRandomlyShip(Square.Mark.DESTROYER)) ;
 		}
 		// Draw ocean in console with different square types in board array taken from the Square class.
 		public void DebugOcean()
@@ -132,40 +137,40 @@ namespace battle_ships
 			return true;
 		}
 
-		public bool CheckHit(int posx, int posy, Ocean playerOcean)
+		public bool CheckHit(int posx, int posy)
 		{
 			// convert posx/posy na int32
 
-			if (playerOcean.Board[posx, posy].IsShip())
+			if (this.Board[posx, posy].IsShip())
 			{
 				return true;
 			}
 			return false;
 		}
 
-		public void MarkHit(int posx, int posy, Ocean playerOcean)
+		public void MarkHit(int posx, int posy)
 		{
-			if (!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.HIT) && //
-				!playerOcean.Board[posx, posy].Back.Equals(Square.Mark.SUNK)
+			if (!this.Board[posx, posy].Back.Equals(Square.Mark.HIT) && //
+				!this.Board[posx, posy].Back.Equals(Square.Mark.SUNK)
 				)
 			{
-				if (CheckHit(posx, posy, playerOcean)) { playerOcean.Board[posx, posy].SetMark(Square.Mark.HIT); }
-				else { playerOcean.Board[posx, posy].SetMark(Square.Mark.MISSED); }		
+				if (this.CheckHit(posx, posy)) { this.Board[posx, posy].SetMark(Square.Mark.HIT); }
+				else { this.Board[posx, posy].SetMark(Square.Mark.MISSED); }		
 			}
-			playerOcean.Board[posx, posy].SetVisible();
+			this.Board[posx, posy].SetVisible();
 			}
 
-		public bool ForWin(Ocean Mapa)
+		public bool ForWin()
 		{
-			int row = Mapa.Board.GetLength(0);
-			int col = Mapa.Board.GetLength(1);
+			int row = this.Board.GetLength(0);
+			int col = this.Board.GetLength(1);
 			for (int x = 0; x < row; x++)
 			{
 				for (int y = 0; y < col; y++)
 				{
-					if (Mapa.Board[x, y].Back != Square.Mark.SUNK &&//
-						Mapa.Board[x, y].Back != Square.Mark.NOT_SET &&//
-						Mapa.Board[x, y].Back != Square.Mark.MISSED
+					if (this.Board[x, y].Back != Square.Mark.SUNK &&//
+						this.Board[x, y].Back != Square.Mark.NOT_SET &&//
+						this.Board[x, y].Back != Square.Mark.MISSED
 						)
 					{
 						return false;

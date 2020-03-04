@@ -72,15 +72,15 @@ namespace battle_ships{
 			switch (Back)
 			{
 				case Mark.CARRIER:
-					return '-';
+					return 'C';
 				case Mark.BATTLESHIP:
-					return '-';
+					return 'b';
 				case Mark.CRUISER:
-					return '-';
+					return 'c';
 				case Mark.SUBMARINE:
-					return '-';
+					return 's';
 				case Mark.DESTROYER:
-					return '-';
+					return 'd';
 				case Mark.HIT:
 					return 'X';
 				case Mark.MISSED:
