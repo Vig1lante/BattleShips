@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace battle_ships{
+namespace battle_ships {
 	class Square {
 		public Square.Mark Front { get; set; }
 		public Square.Mark Back { get; set; }
@@ -13,7 +13,7 @@ namespace battle_ships{
 
 		// Set the square type for ship type field.
 		public void SetMark(Square.Mark value) => Back = value;
-		
+
 
 		// Check whether the field for back square is not occupied.	
 		public bool IsAvailable() {
@@ -31,23 +31,6 @@ namespace battle_ships{
 			}
 			return false;
 		}
-
-
-		//public static int ShipSizeSum()
-		//{
-		//	int totalSum = 0;
-		//	foreach(Mark item in Enum.GetValues(typeof(Mark)))
-		//	{
-		//		if (item == Mark.BATTLESHIP ||
-		//			item == Mark.CARRIER ||
-		//			item == Mark.CRUISER ||
-		//			item == Mark.DESTROYER ||
-		//			item == Mark.SUBMARINE) {
-		//			totalSum += (int)item;
-		//		}
-		//	}
-		//	return totalSum;
-		//}
 		public bool IsMiscSymbol()
 		{
 			if (Back == Mark.MISSED ||
@@ -62,25 +45,25 @@ namespace battle_ships{
 			_ = Back.Equals(Mark.HIT);
 			return false;
 		}
-		public Square(){
+		public Square()
+		{
 			this.Front = Mark.WATER;
 			this.Back = Mark.NOT_SET;
 		}
-		// Define method for enum ship type that returns ship-specific char.
-		// UPDATE 01.03 -- Changed chars for invisible - resuable for player vs PC (METHOD OVERLOAD?)
-		public char Draw() {
+
+		public char Draw(){
 			switch (Back)
 			{
 				case Mark.CARRIER:
-					return 'C';
+					return '-';
 				case Mark.BATTLESHIP:
-					return 'b';
+					return '-';
 				case Mark.CRUISER:
-					return 'c';
+					return '-';
 				case Mark.SUBMARINE:
-					return 's';
+					return '-';
 				case Mark.DESTROYER:
-					return 'd';
+					return '-';
 				case Mark.HIT:
 					return 'X';
 				case Mark.MISSED:
@@ -94,8 +77,9 @@ namespace battle_ships{
 			}
 			return ' ';
 		}
-		// Define method for the amount of squares occupied by ship type
-		// Return adequate int value.
+		
+			// Define method for the amount of squares occupied by ship type
+			// Return adequate int value.
 		public static int GetOccupiedSquares(Square.Mark type) {
 			switch (type)
 			{
@@ -121,7 +105,6 @@ namespace battle_ships{
 					break;
 			}
 			return -1;
+			}
 		}
-
-	}
-}
+	} 
