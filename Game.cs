@@ -11,28 +11,126 @@ namespace battle_ships
         private Ocean player1;
         private Ocean player2;
 
-        //method for player vs player ()
-        //method for select player
         public Game(Ocean player1, Ocean player2)
         {
             this.player1 = player1;
             this.player2 = player2;
         }
-        public Ocean GetOppositePlayer(Player type)
+        public Ocean GetOppositePlayer(Player type, string playerone, string playertwo)
         {
-            switch(type)
+            switch (type)
             {
                 case Player.PLAYER_ONE:
                     CurrentPlayer = Player.PLAYER_TWO;
+                    Console.WriteLine($"\nThe current player's turn: {playertwo}");
                     return player2;
-
                 case Player.PLAYER_TWO:
                     CurrentPlayer = Player.PLAYER_ONE;
+                    Console.WriteLine($"\nThe current player's turn: {playerone}");
                     return player1;
             }
-            
+
             return null;
         }
+        private Ocean GetOppositeComputer(Player type, string player)
+        {
+            switch (type)
+            {
+                case Player.PLAYER_ONE:
+                    CurrentPlayer = Player.COMPUTER;
+                    Console.WriteLine($"\nThe current player's turn: COMPUTER");
+                    return player2;
+                case Player.COMPUTER:
+                    CurrentPlayer = Player.PLAYER_ONE;
+                    Console.WriteLine($"\nThe current player's turn: {player}");
+                    return player1;
+            }
+
+            return null;
+        }
+
+ 
+        private int[] GetCoords(string sampleCoords)
+        {
+            int finalX;
+            int[] coordSet;
+
+            if (sampleCoords == "q" || sampleCoords == "quit")
+            {
+                Console.WriteLine("See you next time!");
+            }
+            if (checkCoords(sampleCoords))
+            {
+                char coordy = Convert.ToChar(sampleCoords[0]);
+                if (sampleCoords.Length == 3)
+                {
+
+                    finalX = Int32.Parse(sampleCoords[1].ToString() + sampleCoords[2].ToString()) - 1;
+                }
+                else { finalX = Int32.Parse(sampleCoords[1].ToString()) - 1; }
+                int finalY = char.ToUpper(coordy) - 64 - 1;
+                coordSet = new int[2] { finalX, finalY };
+                return coordSet;
+            }
+            return null;
+        }
+
+        private string FinalCoords(string coords)
+        {
+            bool check = true;
+            
+            if (!checkCoords(coords))
+            {
+                while (check)
+                {
+                    string cords = Console.ReadLine();
+                    if (checkCoords(cords)) { return cords; }
+                }
+            }
+            return coords;
+        }
+
+        private bool CheckIfAToZ(string coords)
+        {
+            var validLetters = "abcdefghij";
+            foreach (char c in validLetters)
+            {
+                if (coords[0] == c)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        private bool checkCoords(string coords)
+        {
+            bool checkfirstindex = Char.IsLetter(coords, 0);
+            bool checksecondindex = Char.IsNumber(coords, 1);
+            if (!checkfirstindex)
+            {
+                Console.WriteLine("Not a letter!");
+                return false;
+            }
+            if (coords.Length == 2)
+            {
+                if (!checksecondindex) { Console.WriteLine("Sorry, not a number for your second digit"); return false; }
+                if (!CheckIfAToZ(coords)) { Console.WriteLine("Letter out of range!"); return false; }
+            }
+            else if (coords.Length == 3)
+            {
+                bool checkthirdindex = Char.IsNumber(coords, 2);
+                if (!checksecondindex && !checkthirdindex) { Console.WriteLine("Sorry, not a number for your third digit"); return false; }
+                int xySum = int.Parse(coords[1].ToString()) + int.Parse(coords[2].ToString());
+                if (xySum > 10) { Console.WriteLine("Number out of board range!"); return false; }
+            }
+            else if (coords.Length > 3)
+            {
+                Console.WriteLine("Your coordinates are screwed, check their length!");
+                return false;
+            }
+                return true;
+        }
+
         public void MainMenu()
         {
             Console.WriteLine("WELCOME TO THE BATTLESHIP GAME!");
@@ -51,10 +149,9 @@ namespace battle_ships
                         PlayerPlayer();
                         break;
                     case "2":
-                        Console.WriteLine("WIP");
-                        //PlayerComputer();
-                        game = false;
-                        break;
+                        Console.WriteLine("Work in progress!");
+                        PlayerComputer();
+                        continue;
                     case "3":
                         break;
                     default:
@@ -64,20 +161,51 @@ namespace battle_ships
                 break;
             }
         }
-
-        //public string PrintName(string name1, string name2)
-        //{
-        //    if (player1)
-        //    {
-        //        return name1;
-        //    }
-        //    return name2;
-        //}
-
         public bool PlayerPlayer()
         {
-            Ocean currentlyAttacked; int posX; var p1 = player1; var p2 = player2;
+            Ocean currentlyAttacked; int x; int y; var p1 = player1; var p2 = player2;
             CurrentPlayer = Player.PLAYER_ONE;
+            Console.WriteLine("Player One, please enter your name: ");
+            string p1Name = Console.ReadLine();
+            Console.WriteLine("Player Two, please enter your name: ");
+            string p2Name = Console.ReadLine();
+
+            bool flag = true;
+            while (flag)
+            {
+
+                currentlyAttacked = GetOppositePlayer(CurrentPlayer, p1Name, p2Name);
+                Console.WriteLine("Current Ocean");
+                currentlyAttacked.DebugOcean();
+                Console.WriteLine("Type in your coords -- !! LETTER FIRST, THEN NUMBER (EG. 'A2') !!");
+                Console.WriteLine("You can also write 'q' or 'quit' to exit the game");
+                string coords = Console.ReadLine();
+                var finalXY = FinalCoords(coords);
+                x = GetCoords(finalXY)[0];
+                y = GetCoords(finalXY)[1];
+                currentlyAttacked.MarkHit(x, y);
+                if (currentlyAttacked.Board[x, y].Back.Equals(Square.Mark.HIT))
+                {
+                    currentlyAttacked.DebugOcean();
+                    currentlyAttacked = GetOppositePlayer(CurrentPlayer, p1Name, p2Name);
+                }
+                new SunkManager(p1).SunkHammer();
+                new SunkManager(p2).SunkHammer();
+                if (currentlyAttacked.ForWin() == true)
+                {
+                    Console.WriteLine("You win! GZ!");
+                    return true;
+                }
+                currentlyAttacked.DebugOcean();
+                Console.WriteLine("\n\nEND OF ROUND");
+            }
+            return false;
+        }
+        public bool PlayerComputer()
+        {
+            Ocean currentlyAttacked; int x; int y; var p1 = player1; var p2 = player2;
+            var computer = new Computer(player2);
+            CurrentPlayer = Player.COMPUTER;
             Console.BackgroundColor = ConsoleColor.Black;
             Console.ForegroundColor = ConsoleColor.DarkBlue;
 
@@ -85,41 +213,31 @@ namespace battle_ships
             Console.WriteLine("Player One, please enter your name: ");
             string p1Name = Console.ReadLine();
 
-            Console.WriteLine("Player Two, please enter your name: ");
-            string p2Name = Console.ReadLine();
-
-
             bool flag = true;
             while (flag)
             {
 
-                currentlyAttacked = GetOppositePlayer(CurrentPlayer);
+                currentlyAttacked = GetOppositeComputer(CurrentPlayer, p1Name);
                 Console.WriteLine("Current Ocean");
                 currentlyAttacked.DebugOcean();
                 Console.WriteLine("Type in your coords -- !! LETTER FIRST, THEN NUMBER (EG. 'A2') !!");
                 Console.WriteLine("You can also write 'q' or 'quit' to exit the game");
 
-                string sampleCoords = Console.ReadLine();
-                if (sampleCoords == "q" || sampleCoords == "quit")
-                {
-                    flag = false;
-                    Console.WriteLine("See you next time!");
-                    continue;
-                }
-                char y = Convert.ToChar(sampleCoords[0]);
-                if (sampleCoords.Length == 3)
+                if (currentlyAttacked == player1)
                 {
 
-                    posX = Int32.Parse(sampleCoords[1].ToString() + sampleCoords[2].ToString()) - 1;
+                    string coords = Console.ReadLine();
+                    var finalXY = FinalCoords(coords);
+                    x = GetCoords(finalXY)[0];
+                    y = GetCoords(finalXY)[1];
+                    currentlyAttacked.MarkHit(x, y);
+                    if (currentlyAttacked.Board[x, y].Back.Equals(Square.Mark.HIT))
+                    {
+                        currentlyAttacked.DebugOcean();
+                        currentlyAttacked = GetOppositeComputer(CurrentPlayer, p1Name);
+                    }
                 }
-                else { posX = Int32.Parse(sampleCoords[1].ToString()) - 1; }
-                int posY = char.ToUpper(y) - 64 - 1;
-                currentlyAttacked.MarkHit(posX, posY);
-                if (currentlyAttacked.Board[posX, posY].Back.Equals(Square.Mark.HIT))
-                {
-                    currentlyAttacked.DebugOcean();
-                    currentlyAttacked = GetOppositePlayer(CurrentPlayer);
-                }
+                if (currentlyAttacked == player2){ computer.CompAttack(); }
                 new SunkManager(p1).SunkHammer();
                 new SunkManager(p2).SunkHammer();
                 if (currentlyAttacked.ForWin() == true)
@@ -128,75 +246,11 @@ namespace battle_ships
                     flag = false;
                 }
                 currentlyAttacked.DebugOcean();
+
                 Console.WriteLine("\n\nEND OF ROUND");
             }
             return false;
         }
+
     }
 }
-
-            //int PlayerComputer()
-            //          {
-            //              int posX;
-
-            //              Console.BackgroundColor = ConsoleColor.Black;
-            //              Console.ForegroundColor = ConsoleColor.DarkBlue;
-
-            //              Console.WriteLine("WELCOME TO THE BATTLESHIP GAME!");
-            //              Console.WriteLine("ENJOY YOUR STAY AND MAY THE BEST ONE WIN!\n\n");
-            //              var playerOne = new Ocean();
-            //              var playerTwo = new Ocean();
-            //              var computer = new Computer(testOcean);
-
-            //              Console.WriteLine("PLAYER OCEAN");
-            //              testOcean.DebugOcean();
-            //              Console.WriteLine("\n");
-            //              Console.WriteLine("COMPUTER OCEAN");
-            //              computerOcean.DebugOcean();
-
-            //              bool flag = true;
-            //              while (flag)
-            //              {
-            //                  Console.BackgroundColor = ConsoleColor.Black;
-            //                  Console.ForegroundColor = ConsoleColor.DarkBlue;
-            //                  //Console.ForegroundColor = ConsoleColor.DarkCyan;
-            //                  Console.WriteLine("Type in your coords -- !! LETTER FIRST, THEN NUMBER (EG. 'A2') !!");
-
-            //                  string sampleCoords = Console.ReadLine();
-            //                  if (sampleCoords == "q" || sampleCoords == "quit")
-            //                  {
-            //                      flag = false;
-            //                      Console.WriteLine("See you next time!");
-            //                      continue;
-            //                  }
-            //                  //var numbers = sampleCoords.Split(',');
-            //                  //int[] myInts = Array.ConvertAll(numbers, int.Parse);
-            //                  char y = Convert.ToChar(sampleCoords[0]);
-            //                  if (sampleCoords.Length == 3)
-            //                  {
-
-            //                      posX = Int32.Parse(sampleCoords[1].ToString() + sampleCoords[2].ToString()) - 1;
-            //                  }
-            //                  else { posX = Int32.Parse(sampleCoords[1].ToString()) - 1; }
-            //                  int posY = char.ToUpper(y) - 64 - 1;
-            //                  computerOcean.MarkHit(posX, posY);
-            //                  computer.CompAttack();
-            //                  new SunkManager(computerOcean).SunkHammer();
-            //                  new SunkManager(testOcean).SunkHammer();
-            //                  Console.WriteLine("PLAYER OCEAN");
-            //                  testOcean.DebugOcean();
-            //                  Console.WriteLine("\n");
-            //                  Console.WriteLine("COMPUTER OCEAN");
-
-            //                  computerOcean.DebugOcean();
-            //                  if (testOcean.ForWin() == true)
-            //                  {
-            //                      Console.WriteLine("You win! GZ!");
-            //                      flag = false;
-            //                  }
-            //                  Console.ResetColor();
-            //                  Console.WriteLine("\n\nEND OF ROUND");
-            //              }
-            //            }
-        
-
