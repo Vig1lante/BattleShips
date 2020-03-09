@@ -10,7 +10,6 @@ namespace battle_ships
         private Player CurrentPlayer;
         private Ocean player1;
         private Ocean player2;
-        private string coords;
 
         public Game(Ocean player1, Ocean player2)
         {
@@ -51,24 +50,24 @@ namespace battle_ships
         }
 
  
-        private int[] GetCoords(string sampleCoords)
+        private int[] GetCoords(Ocean ocean)
         {
             int finalX;
             int[] coordSet;
 
-            if (sampleCoords == "q" || sampleCoords == "quit")
+            if (ocean.Coords == "q" || ocean.Coords == "quit")
             {
                 Console.WriteLine("See you next time!");
             }
-            if (checkCoords(sampleCoords))
+            if (CheckCoords(ocean))
             {
-                char coordy = Convert.ToChar(sampleCoords[0]);
-                if (sampleCoords.Length == 3)
+                char coordy = Convert.ToChar(ocean.Coords[0]);
+                if (ocean.Coords.Length == 3)
                 {
 
-                    finalX = Int32.Parse(sampleCoords[1].ToString() + sampleCoords[2].ToString()) - 1;
+                    finalX = Int32.Parse(ocean.Coords[1].ToString() + ocean.Coords[2].ToString()) - 1;
                 }
-                else { finalX = Int32.Parse(sampleCoords[1].ToString()) - 1; }
+                else { finalX = Int32.Parse(ocean.Coords[1].ToString()) - 1; }
                 int finalY = char.ToUpper(coordy) - 64 - 1;
                 coordSet = new int[2] { finalX, finalY };
                 return coordSet;
@@ -76,25 +75,26 @@ namespace battle_ships
             return null;
         }
 
-        private string FinalCoords(string coords)
+        private string FinalCoords(Ocean ocean)
         {
             bool check = true;
             
-            if (!checkCoords(coords))
+            if (!CheckCoords(ocean))
             {
                 while (check)
                 {
                     string cords = Console.ReadLine();
-                    if (checkCoords(cords)) { return cords; }
+                    ocean.Coords = cords;
+                    if (CheckCoords(ocean)) { ocean.Coords = cords; return ocean.Coords; }
                 }
             }
-            return coords;
+            return ocean.Coords;
         }
 
-        private bool CheckIfAToZ(string coords)
+        private bool CheckIfAToZ(Ocean ocean)
         {
             string validLetters = "abcdefghij";
-            var formatFirstLetter = coords[0].ToString().ToLower();
+            string formatFirstLetter = ocean.Coords[0].ToString().ToLower();
             char firstLetter = char.Parse(formatFirstLetter);
 
             foreach (char c in validLetters)
@@ -106,28 +106,34 @@ namespace battle_ships
             }
             return false;
         }
-        private bool checkCoords(string coords)
+        private bool CheckCoords(Ocean ocean)
         {
-            bool checkfirstindex = Char.IsLetter(coords, 0);
-            bool checksecondindex = Char.IsNumber(coords, 1);
-            if (!checkfirstindex)
+            bool checkfirstindex = Char.IsLetter(ocean.Coords, 0);
+            if (ocean.Coords.Length == 1)
             {
-                Console.WriteLine("Not a letter!");
+                Console.WriteLine("Please provide a number as well!");
                 return false;
             }
-            if (coords.Length == 2)
+            if (!checkfirstindex || !CheckIfAToZ(ocean))
             {
-                if (!checksecondindex) { Console.WriteLine("Sorry, not a number for your second digit"); return false; }
-                if (!CheckIfAToZ(coords)) { Console.WriteLine("Letter out of range!"); return false; }
+                Console.WriteLine("Not a letter or invalid letter!");
+                return false;
             }
-            else if (coords.Length == 3)
+            if (ocean.Coords.Length == 2)
             {
-                bool checkthirdindex = Char.IsNumber(coords, 2);
+                bool checksecondindex = (Char.IsNumber(ocean.Coords, 1) && (int)ocean.Coords[1] >= 0) ? true : false;
+                if (!checksecondindex) { Console.WriteLine("Sorry, not a number for your second digit"); return false; }
+            }
+            else if (ocean.Coords.Length == 3)
+            {
+                bool checksecondindex = Char.IsNumber(ocean.Coords, 1);
+                bool checkthirdindex = Char.IsNumber(ocean.Coords, 2);
                 if (!checksecondindex && !checkthirdindex) { Console.WriteLine("Sorry, not a number for your third digit"); return false; }
-                int xySum = int.Parse(coords[1].ToString()) + int.Parse(coords[2].ToString());
+                string lastTwoDigits = ocean.Coords[1].ToString() + ocean.Coords[2].ToString();
+                int xySum = int.Parse(lastTwoDigits);
                 if (xySum > 10) { Console.WriteLine("Number out of board range!"); return false; }
             }
-            else if (coords.Length > 3)
+            else if (ocean.Coords.Length > 3)
             {
                 Console.WriteLine("Your coordinates are screwed, check their length!");
                 return false;
@@ -183,10 +189,10 @@ namespace battle_ships
                 currentlyAttacked.DebugOcean();
                 Console.WriteLine("Type in your coords -- !! LETTER FIRST, THEN NUMBER (EG. 'A2') !!");
                 Console.WriteLine("You can also write 'q' or 'quit' to exit the game");
-                string coords = Console.ReadLine();
-                var finalXY = FinalCoords(coords);
-                x = GetCoords(finalXY)[0];
-                y = GetCoords(finalXY)[1];
+                string coords = Console.ReadLine(); currentlyAttacked.Coords = coords;
+                var finalXY = FinalCoords(currentlyAttacked); currentlyAttacked.Coords = finalXY;
+                x = GetCoords(currentlyAttacked)[0];
+                y = GetCoords(currentlyAttacked)[1];
                 currentlyAttacked.MarkHit(x, y);
                 if (currentlyAttacked.Board[x, y].Back.Equals(Square.Mark.HIT))
                 {
@@ -230,10 +236,10 @@ namespace battle_ships
                 if (currentlyAttacked == player1)
                 {
 
-                    string coords = Console.ReadLine();
-                    var finalXY = FinalCoords(coords);
-                    x = GetCoords(finalXY)[0];
-                    y = GetCoords(finalXY)[1];
+                    string coords = Console.ReadLine(); currentlyAttacked.Coords = coords;
+                    var finalXY = FinalCoords(currentlyAttacked); currentlyAttacked.Coords = finalXY;
+                    x = GetCoords(currentlyAttacked)[0];
+                    y = GetCoords(currentlyAttacked)[1];
                     currentlyAttacked.MarkHit(x, y);
                     if (currentlyAttacked.Board[x, y].Back.Equals(Square.Mark.HIT))
                     {

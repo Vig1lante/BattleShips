@@ -11,6 +11,7 @@ namespace battle_ships
 
 		// Create a 10x10 array of "Square" type
 		public Square[,] Board { get; set; }
+		public string Coords { get; set; }
 
 		// Define custom ocean constructor for filling the "Board". 
 		// Adds instances of Square type in each iteration.
