@@ -10,6 +10,7 @@ namespace battle_ships
         private Player CurrentPlayer;
         private Ocean player1;
         private Ocean player2;
+        private string coords;
 
         public Game(Ocean player1, Ocean player2)
         {
@@ -92,10 +93,13 @@ namespace battle_ships
 
         private bool CheckIfAToZ(string coords)
         {
-            var validLetters = "abcdefghij";
+            string validLetters = "abcdefghij";
+            var formatFirstLetter = coords[0].ToString().ToLower();
+            char firstLetter = char.Parse(formatFirstLetter);
+
             foreach (char c in validLetters)
             {
-                if (coords[0] == c)
+                if (firstLetter == c)
                 {
                     return true;
                 }
